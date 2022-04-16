@@ -155,7 +155,7 @@ class MessagesViewModel : ViewModel() {
     }
 
 
-    var currentlySelecting: MutableLiveData<String> = MutableLiveData()
+    var currentlySelecting: MutableLiveData<String> = MutableLiveData("")
     var msgFormat: Boolean = false
     var selectedWordCategory: MutableLiveData<Int> = MutableLiveData(0)
     val msgTemplate1: MutableLiveData<String> = MutableLiveData("")

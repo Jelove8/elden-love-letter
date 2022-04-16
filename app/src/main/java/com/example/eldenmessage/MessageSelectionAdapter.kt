@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MessageSelectionAdapter(
     private var adapterData: MutableList<String>,
-    private val createMessageFragment: CreateMessageFragment
+    private val mainActivity: MainActivity
     ) : RecyclerView.Adapter<MessageSelectionAdapter.MessageSelectionViewHolder>() {
 
     /**
      * Update Word Categories Button
-     *  This function is called in MessageSelectionFragment
+     *  This function is called in SelectMessageFragment
      *  and serves to invoke notifyDataSetChanged() on this adapter
      *  to update the words listed within the recycler view.
      */
@@ -42,8 +42,8 @@ class MessageSelectionAdapter(
     ) {
         holder.tvCurrentSelection.text = adapterData[position]
         holder.tvCurrentSelection.setOnClickListener {
-
-            createMessageFragment.confirmMessageComponentSelection(position)
+            mainActivity.getCreateMessageFrag().confirmMessageComponentSelection(position)
+            mainActivity.hideSubFragment()
         }
     }
 

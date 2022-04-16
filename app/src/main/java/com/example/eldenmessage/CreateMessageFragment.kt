@@ -1,43 +1,28 @@
 package com.example.eldenmessage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.Fragment
 import com.example.eldenmessage.databinding.FragmentCreateMessageBinding
-
 
 class CreateMessageFragment : Fragment() {
 
     private lateinit var binding: FragmentCreateMessageBinding
+    private lateinit var mainActivity: MainActivity
+    private lateinit var messagesVM: MessagesViewModel
 
-    private lateinit var fragMsgComponents: FragmentContainerView
     private lateinit var template1: EditText
     private lateinit var template2: EditText
     private lateinit var word1: EditText
     private lateinit var word2: EditText
     private lateinit var conjunction: EditText
 
-    private fun displayMessageSelection() {
-        val fragmentManager = childFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction
-            .replace(R.id.frag_msgComponents, MessageSelectionFragment())
-            .addToBackStack(null)
-            .commit()
-        fragMsgComponents.visibility = View.VISIBLE
-    }
-    fun hideMessageSelection() {
-        fragMsgComponents.removeAllViews()
-        fragMsgComponents.visibility = View.GONE
-    }
 
     // Called within MessageComponentAdapter when a message component is selected.
     fun confirmMessageComponentSelection(position: Int) {
-        val messagesVM = (context as MainActivity).getMessagesVM()
         messagesVM.selectString(position)
 
         when (messagesVM.currentlySelecting.value!!) {
@@ -57,7 +42,6 @@ class CreateMessageFragment : Fragment() {
                 word2.setText(messagesVM.msgWord2.value!!)
             }
         }
-        hideMessageSelection()
     }
 
     override fun onCreateView(
@@ -70,14 +54,18 @@ class CreateMessageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val messagesVM = (context as MainActivity).getMessagesVM()
+
+        mainActivity = context as MainActivity
+        mainActivity.setCreateMessageFrag(this)
+        messagesVM = mainActivity.getMessagesVM()
+
         // Initializing lateinit variables
-        fragMsgComponents = binding.fragMsgComponents
         template1 = binding.etTemplates1
         template2 = binding.etTemplates2
         conjunction = binding.etConjunctions
         word1 = binding.etWords1
         word2 = binding.etWords2
+
 
         /**
          * Toggle Message Format Button
@@ -107,32 +95,32 @@ class CreateMessageFragment : Fragment() {
          */
         binding.etTemplates1.setOnClickListener {
             messagesVM.currentlySelecting.value = "Template1"
-            displayMessageSelection()
+            mainActivity.displayMessageSelection()
         }
         binding.etTemplates2.setOnClickListener {
             messagesVM.currentlySelecting.value = "Template2"
-            displayMessageSelection()
+            mainActivity.displayMessageSelection()
         }
         binding.etConjunctions.setOnClickListener {
             messagesVM.currentlySelecting.value = "Conjunction"
-            displayMessageSelection()
+            mainActivity.displayMessageSelection()
         }
         binding.etWords1.setOnClickListener {
             messagesVM.currentlySelecting.value = "Word1"
-            displayMessageSelection()
+            mainActivity.displayMessageSelection()
         }
         binding.etWords2.setOnClickListener {
             messagesVM.currentlySelecting.value = "Word2"
-            displayMessageSelection()
+            mainActivity.displayMessageSelection()
         }
 
         // Button: Confirm Message Creation
         binding.btnFinishMessage.setOnClickListener {
-            if ((context as MainActivity).getMessagesVM().isMessageComplete()) {
-                binding.tvOutputMessage.text = (context as MainActivity).getMessagesVM().getFinalMessage()
+            if (mainActivity.getMessagesVM().isMessageComplete()) {
+                binding.tvOutputMessage.text = messagesVM.getFinalMessage()
             }
             else {
-                (context as MainActivity).writeToast("All message fields must be filled out.")
+                mainActivity.writeToast("All message fields must be filled out.")
             }
         }
     }

@@ -5,7 +5,8 @@
     android:id="@+id/cnst_MsgSelect"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MessageSelectionFragment" >
+    android:background="#FFFFFF"
+    tools:context=".SelectMessageFragment">
 
     <TextView
         android:id="@+id/tv_headerMsgSelect"
