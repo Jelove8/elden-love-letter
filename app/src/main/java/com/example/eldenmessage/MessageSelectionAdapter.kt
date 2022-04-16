@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MessageSelectionAdapter(
     private var adapterData: MutableList<String>,
-    private val mainActivity: MainActivity
+    private val createMessageFragment: CreateMessageFragment
     ) : RecyclerView.Adapter<MessageSelectionAdapter.MessageSelectionViewHolder>() {
 
     /**
@@ -42,7 +42,8 @@ class MessageSelectionAdapter(
     ) {
         holder.tvCurrentSelection.text = adapterData[position]
         holder.tvCurrentSelection.setOnClickListener {
-            mainActivity.confirmMessageComponentSelection(position)
+
+            createMessageFragment.confirmMessageComponentSelection(position)
         }
     }
 

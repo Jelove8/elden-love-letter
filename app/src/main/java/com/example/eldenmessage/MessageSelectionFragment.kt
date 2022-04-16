@@ -15,7 +15,6 @@ import com.example.eldenmessage.databinding.FragmentMessageSelectionBinding
 class MessageSelectionFragment : Fragment() {
 
     private lateinit var binding: FragmentMessageSelectionBinding
-    private lateinit var messagesVM: MessagesViewModel
 
     private lateinit var rcyMsgSelect: RecyclerView
     private lateinit var rcyMsgAdapter: MessageSelectionAdapter
@@ -26,22 +25,23 @@ class MessageSelectionFragment : Fragment() {
      *  the appropriate data from MessagesViewModel is passed through MessageSelectionAdapter.
      */
     private fun populateRecycler() {
+        val messagesVM = (context as MainActivity).getMessagesVM()
         val currentlySelecting = messagesVM.currentlySelecting.value!!
         when {
             currentlySelecting.contains("Template") -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getConstantTemplates(),(context as MainActivity))
+                val adapter = MessageSelectionAdapter(messagesVM.getConstantTemplates(),parentFragment as CreateMessageFragment)
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
             }
             currentlySelecting.contains("Conjunction") -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getConstantConjunctions(),(context as MainActivity))
+                val adapter = MessageSelectionAdapter(messagesVM.getConstantConjunctions(),parentFragment as CreateMessageFragment)
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
             }
             currentlySelecting.contains("Word") -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getWordsByCategory(0),(context as MainActivity))
+                val adapter = MessageSelectionAdapter(messagesVM.getWordsByCategory(0),parentFragment as CreateMessageFragment)
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
@@ -61,12 +61,12 @@ class MessageSelectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initializing lateinit variables
-        messagesVM = (context as MainActivity).messagesVM
+        val messagesVM = (context as MainActivity).getMessagesVM()
         rcyMsgSelect = binding.rcyMsgSelect
 
         // Button to clear and hide this Fragment's container
         binding.btnCancelMsgSelect.setOnClickListener {
-            (context as MainActivity).hideMessageSelection()
+            (parentFragment as CreateMessageFragment).hideMessageSelection()
         }
 
         // Initializing Fragment UI

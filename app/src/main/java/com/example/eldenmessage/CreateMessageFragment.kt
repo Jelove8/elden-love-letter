@@ -6,17 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.activityViewModels
 import com.example.eldenmessage.databinding.FragmentCreateMessageBinding
 
 
 class CreateMessageFragment : Fragment() {
-
-    companion object {
-        const val FINAL_MSG = "All message fields must be filled out."
-    }
 
     private lateinit var binding: FragmentCreateMessageBinding
 
@@ -31,7 +25,7 @@ class CreateMessageFragment : Fragment() {
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction
-            .replace(R.id.frag_msgComponents, SelectMessageFragment())
+            .replace(R.id.frag_msgComponents, MessageSelectionFragment())
             .addToBackStack(null)
             .commit()
         fragMsgComponents.visibility = View.VISIBLE
@@ -76,7 +70,7 @@ class CreateMessageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val messagesVM: MessagesViewModel by activityViewModels()
+        val messagesVM = (context as MainActivity).getMessagesVM()
         // Initializing lateinit variables
         fragMsgComponents = binding.fragMsgComponents
         template1 = binding.etTemplates1
