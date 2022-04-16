@@ -252,13 +252,4 @@ class MessagesViewModel : ViewModel() {
         return newMessage
     }
 
-
-
-    // Testing
-
-
-
-
-
-
 }

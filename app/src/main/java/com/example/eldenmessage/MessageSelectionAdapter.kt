@@ -40,10 +40,7 @@ class MessageSelectionAdapter(
         holder: MessageSelectionViewHolder,
         position: Int
     ) {
-
         holder.tvCurrentSelection.text = adapterData[position]
-
-        // Button: Select a word component
         holder.tvCurrentSelection.setOnClickListener {
             mainActivity.confirmMessageComponentSelection(position)
         }
