@@ -11,6 +11,12 @@ class MessageSelectionAdapter(
     private val mainActivity: MainActivity
     ) : RecyclerView.Adapter<MessageSelectionAdapter.MessageSelectionViewHolder>() {
 
+    /**
+     * Update Word Categories Button
+     *  This function is called in MessageSelectionFragment
+     *  and serves to invoke notifyDataSetChanged() on this adapter
+     *  to update the words listed within the recycler view.
+     */
     fun updateAdapterData(newData: MutableList<String>) {
         adapterData = newData
         this.notifyDataSetChanged()
@@ -18,7 +24,6 @@ class MessageSelectionAdapter(
 
     class MessageSelectionViewHolder(ItemView: View, thisAdapter: MessageSelectionAdapter) : RecyclerView.ViewHolder(ItemView){
         val tvCurrentSelection: TextView = itemView.findViewById(R.id.tv_messageSelection)
-
     }
 
     override fun onCreateViewHolder(
@@ -35,9 +40,12 @@ class MessageSelectionAdapter(
         holder: MessageSelectionViewHolder,
         position: Int
     ) {
+
         holder.tvCurrentSelection.text = adapterData[position]
+
+        // Button: Select a word component
         holder.tvCurrentSelection.setOnClickListener {
-            mainActivity.confirmMessageSelection(position)
+            mainActivity.confirmMessageComponentSelection(position)
         }
     }
 

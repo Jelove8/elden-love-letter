@@ -3,7 +3,6 @@ package com.example.eldenmessage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.FragmentContainerView
@@ -15,32 +14,50 @@ class MainActivity : AppCompatActivity() {
         const val FINAL_MSG = "All message fields must be filled out."
     }
 
+    private lateinit var fragMain: FragmentContainerView
     private lateinit var template1: EditText
     private lateinit var template2: EditText
     private lateinit var word1: EditText
     private lateinit var word2: EditText
     private lateinit var conjunction: EditText
-    private lateinit var btnFinishMessage: Button
-     lateinit var messagesVM: MessagesViewModel
+    lateinit var messagesVM: MessagesViewModel
 
-    private lateinit var fragMain: FragmentContainerView
-
-    fun hideMessageSelection() {
-        btnFinishMessage.visibility = View.VISIBLE
-        fragMain.removeAllViews()
-        fragMain.visibility = View.GONE
-    }
     private fun displayMessageSelection() {
-        btnFinishMessage.visibility = View.INVISIBLE
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction
-            .replace(R.id.frag_main, MessageSelectorFragment())
+            .replace(R.id.frag_main, MessageSelectionFragment())
             .addToBackStack(null)
             .commit()
         fragMain.visibility = View.VISIBLE
     }
+    fun hideMessageSelection() {
+        fragMain.removeAllViews()
+        fragMain.visibility = View.GONE
+    }
 
+    // Called within MessageSelectorAdapter when a message component is selected.
+    fun confirmMessageComponentSelection(position: Int) {
+        messagesVM.selectString(position)
+        when (messagesVM.currentlySelecting.value!!) {
+            "Template1" -> {
+                template1.setText(messagesVM.msgTemplate1.value!!)
+            }
+            "Template2" -> {
+                template2.setText(messagesVM.msgTemplate2.value!!)
+            }
+            "Conjunction" -> {
+                conjunction.setText(messagesVM.msgConjunction.value!!)
+            }
+            "Word1" -> {
+                word1.setText(messagesVM.msgWord1.value!!)
+            }
+            "Word2" -> {
+                word2.setText(messagesVM.msgWord2.value!!)
+            }
+        }
+        hideMessageSelection()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +71,15 @@ class MainActivity : AppCompatActivity() {
         word1 = binding.etWords1
         word2 = binding.etWords2
         fragMain = binding.fragMain
-        btnFinishMessage = binding.btnFinishMessage
         messagesVM = MessagesViewModel()
 
-        // Button: Toggle Message Format
+        /**
+         * Toggle Message Format Button
+         *  There are two possible message formats containing different message components:
+         *      Format 1 -> Template + Word
+         *      Format 2 -> Template1 + Word1 + Conjunction + Template2 + Word2
+         *  This button will toggle the views in Main, and a Boolean variable within MessagesViewModel
+         */
         binding.sbtnToggleMessageFormat.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.cnstMsgConjunction.visibility = View.VISIBLE
@@ -71,7 +93,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // EditText: Open Message Selection
+        /**
+         * Message Component Buttons
+         *  Each button will...
+         *      Update a variable within MessagesViewModel that identifies which message component is being selected.
+         *      Open up MessageSelectionFragment
+         */
         binding.etTemplates1.setOnClickListener {
             messagesVM.currentlySelecting.value = "Template1"
             displayMessageSelection()
@@ -101,35 +128,11 @@ class MainActivity : AppCompatActivity() {
             else {
                 Toast.makeText(this, FINAL_MSG, Toast.LENGTH_SHORT).show()
             }
-
         }
 
     }
 
-    fun confirmMessageSelection(position: Int) {
-        messagesVM.selectString(position)
-        when (messagesVM.currentlySelecting.value!!) {
-            "Template1" -> {
-                template1.setText(messagesVM.msgTemplate1.value!!)
-            }
-            "Template2" -> {
-                template2.setText(messagesVM.msgTemplate2.value!!)
-            }
-            "Conjunction" -> {
-                conjunction.setText(messagesVM.msgConjunction.value!!)
-            }
-            "Word1" -> {
-                word1.setText(messagesVM.msgWord1.value!!)
-            }
-            "Word2" -> {
-                word2.setText(messagesVM.msgWord2.value!!)
-            }
-        }
-        hideMessageSelection()
-    }
-    fun selectWordCategory(position: Int) {
-        messagesVM.selectedWordCategory.value = position
-    }
+
 
 
 }

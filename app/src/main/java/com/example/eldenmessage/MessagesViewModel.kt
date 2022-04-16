@@ -10,6 +10,7 @@ class MessagesViewModel : ViewModel() {
         const val MEOW = "MessagesVM"
     }
 
+    // Hardcoded data from "Elden Ring"
     private val msgTemplates = mutableListOf(
         "**** ahead",
         "No **** ahead",
@@ -37,7 +38,6 @@ class MessagesViewModel : ViewModel() {
         "****?",
         "****..."
     )
-
     private val msgConjunctions = mutableListOf(
         "And then ",
         "Or ",
@@ -49,7 +49,6 @@ class MessagesViewModel : ViewModel() {
         "All the more ",
         ","
     )
-
     private val msgWords = mutableListOf(
         // [0] = Enemies
         mutableListOf(

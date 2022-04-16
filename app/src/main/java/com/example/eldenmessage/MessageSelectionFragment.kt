@@ -10,46 +10,37 @@ import android.widget.Button
 import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eldenmessage.databinding.FragmentMessageSelectorBinding
+import com.example.eldenmessage.databinding.FragmentMessageSelectionBinding
 
-class MessageSelectorFragment : Fragment() {
+class MessageSelectionFragment : Fragment() {
 
-
-
-    private lateinit var binding: FragmentMessageSelectorBinding
+    private lateinit var binding: FragmentMessageSelectionBinding
     private lateinit var messagesVM: MessagesViewModel
 
     private lateinit var rcyMsgSelect: RecyclerView
     private lateinit var rcyMsgAdapter: MessageSelectionAdapter
 
+    /**
+     * Populating Recycler View
+     *  Depending on which message component is currently being selected,
+     *  the appropriate data from MessagesViewModel is passed through MessageSelectionAdapter.
+     */
     private fun populateRecycler() {
-
-        when (messagesVM.currentlySelecting.value!!) {
-            "Template1" -> {
+        val currentlySelecting = messagesVM.currentlySelecting.value!!
+        when {
+            currentlySelecting.contains("Template") -> {
                 val adapter = MessageSelectionAdapter(messagesVM.getConstantTemplates(),(context as MainActivity))
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
             }
-            "Template2" -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getConstantTemplates(),(context as MainActivity))
-                rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
-                rcyMsgSelect.adapter = adapter
-                rcyMsgAdapter = adapter
-            }
-            "Conjunction" -> {
+            currentlySelecting.contains("Conjunction") -> {
                 val adapter = MessageSelectionAdapter(messagesVM.getConstantConjunctions(),(context as MainActivity))
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
             }
-            "Word1" -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getWordsByCategory(0),(context as MainActivity))
-                rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
-                rcyMsgSelect.adapter = adapter
-                rcyMsgAdapter = adapter
-            }
-            "Word2" -> {
+            currentlySelecting.contains("Word") -> {
                 val adapter = MessageSelectionAdapter(messagesVM.getWordsByCategory(0),(context as MainActivity))
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
@@ -62,7 +53,7 @@ class MessageSelectorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMessageSelectorBinding.inflate(layoutInflater,container,false)
+        binding = FragmentMessageSelectionBinding.inflate(layoutInflater,container,false)
         return binding.root
     }
 
@@ -73,36 +64,32 @@ class MessageSelectorFragment : Fragment() {
         messagesVM = (context as MainActivity).messagesVM
         rcyMsgSelect = binding.rcyMsgSelect
 
-        // Button: Goes back to main activity display
+        // Button to clear and hide this Fragment's container
         binding.btnCancelMsgSelect.setOnClickListener {
             (context as MainActivity).hideMessageSelection()
         }
 
-        // Populating recyclerview with correct data
+        // Initializing Fragment UI
         when (messagesVM.currentlySelecting.value) {
             "Template1" -> {
                 binding.tvHeaderMsgSelect.text = "Choose a template"
-                populateRecycler()
             }
             "Template2" -> {
                 binding.tvHeaderMsgSelect.text = "Choose a template"
-                populateRecycler()
             }
             "Conjunction" -> {
                 binding.tvHeaderMsgSelect.text = "Choose a conjunction"
-                populateRecycler()
             }
             "Word1" -> {
                 binding.tvHeaderMsgSelect.text = "Choose a word"
                 binding.llWordCategories.visibility = View.VISIBLE
-                populateRecycler()
             }
             "Word2" -> {
                 binding.tvHeaderMsgSelect.text = "Choose a word"
                 binding.llWordCategories.visibility = View.VISIBLE
-                populateRecycler()
             }
         }
+        populateRecycler()
 
         // Buttons to change Word Category Selection
         for ((c,child) in binding.llWordCategories.children.withIndex()) {
