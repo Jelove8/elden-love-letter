@@ -112,8 +112,5 @@ class MessageSelectorFragment : Fragment() {
                 rcyMsgAdapter.updateAdapterData(messagesVM.getWordsByCategory(messagesVM.selectedWordCategory.value!!))
             }
         }
-
     }
-
-
 }

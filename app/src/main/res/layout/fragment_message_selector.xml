@@ -34,6 +34,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="64dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +45,8 @@
         <LinearLayout
             android:id="@+id/ll_wordCategories"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -51,79 +54,92 @@
                 android:id="@+id/btn_catEnemies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enemies" />
+                android:text="Enemies"
+                android:textSize="10sp" />
 
             <Button
                 android:id="@+id/btn_catPeople"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="People" />
+                android:text="People"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btn_catThings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Things"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btn_catBattleTactics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Battle Tactics"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btn_catActions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Actions"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/btn_catSituations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Situations"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/btn_catPlaces"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Places"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/btn_catDirections"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Directions"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button9"
+                android:id="@+id/btn_catBodyParts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Body Parts"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/btn_catAffinities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Affinities"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/btn_catConcepts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Concepts"
+                android:textSize="10sp" />
 
             <Button
-                android:id="@+id/button12"
+                android:id="@+id/btn_catPhrases"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Phrases"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcy_msgSelect"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
             android:padding="16dp" />
     </LinearLayout>
 

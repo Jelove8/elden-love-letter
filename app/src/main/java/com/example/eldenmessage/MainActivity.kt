@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.FragmentContainerView
 import com.example.eldenmessage.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val FINAL_MSG = "All message fields must be filled out."
+    }
 
     private lateinit var template1: EditText
     private lateinit var template2: EditText
@@ -22,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     fun hideMessageSelection() {
         btnFinishMessage.visibility = View.VISIBLE
+        fragMain.removeAllViews()
         fragMain.visibility = View.GONE
     }
     private fun displayMessageSelection() {
@@ -87,6 +93,17 @@ class MainActivity : AppCompatActivity() {
             displayMessageSelection()
         }
 
+        // Button: Confirm Message Creation
+        binding.btnFinishMessage.setOnClickListener {
+            if (messagesVM.isMessageComplete()) {
+                binding.tvOutputMessage.text = messagesVM.getFinalMessage()
+            }
+            else {
+                Toast.makeText(this, FINAL_MSG, Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
     }
 
     fun confirmMessageSelection(position: Int) {
@@ -113,5 +130,6 @@ class MainActivity : AppCompatActivity() {
     fun selectWordCategory(position: Int) {
         messagesVM.selectedWordCategory.value = position
     }
+
 
 }
