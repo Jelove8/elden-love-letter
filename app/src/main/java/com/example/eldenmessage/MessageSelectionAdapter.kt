@@ -13,7 +13,7 @@ class MessageSelectionAdapter(
 
     /**
      * Update Word Categories Button
-     *  This function is called in MessageSelectionFragment
+     *  This function is called in SelectMessageFragment
      *  and serves to invoke notifyDataSetChanged() on this adapter
      *  to update the words listed within the recycler view.
      */
@@ -42,7 +42,8 @@ class MessageSelectionAdapter(
     ) {
         holder.tvCurrentSelection.text = adapterData[position]
         holder.tvCurrentSelection.setOnClickListener {
-            mainActivity.confirmMessageComponentSelection(position)
+            mainActivity.getCreateMessageFrag().confirmMessageComponentSelection(position)
+            mainActivity.hideSubFragment()
         }
     }
 

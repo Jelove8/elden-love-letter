@@ -1,20 +1,20 @@
 package com.example.eldenmessage
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.view.children
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eldenmessage.databinding.FragmentMessageSelectionBinding
+import com.example.eldenmessage.databinding.FragmentSelectFragmentBinding
 
-class MessageSelectionFragment : Fragment() {
+class SelectMessageFragment : Fragment() {
 
-    private lateinit var binding: FragmentMessageSelectionBinding
+    private lateinit var binding: FragmentSelectFragmentBinding
+    private lateinit var mainActivity: MainActivity
     private lateinit var messagesVM: MessagesViewModel
 
     private lateinit var rcyMsgSelect: RecyclerView
@@ -26,22 +26,23 @@ class MessageSelectionFragment : Fragment() {
      *  the appropriate data from MessagesViewModel is passed through MessageSelectionAdapter.
      */
     private fun populateRecycler() {
+        messagesVM = mainActivity.getMessagesVM()
         val currentlySelecting = messagesVM.currentlySelecting.value!!
         when {
             currentlySelecting.contains("Template") -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getConstantTemplates(),(context as MainActivity))
+                val adapter = MessageSelectionAdapter(messagesVM.getConstantTemplates(),mainActivity)
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
             }
             currentlySelecting.contains("Conjunction") -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getConstantConjunctions(),(context as MainActivity))
+                val adapter = MessageSelectionAdapter(messagesVM.getConstantConjunctions(),mainActivity)
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
             }
             currentlySelecting.contains("Word") -> {
-                val adapter = MessageSelectionAdapter(messagesVM.getWordsByCategory(0),(context as MainActivity))
+                val adapter = MessageSelectionAdapter(messagesVM.getWordsByCategory(0),mainActivity)
                 rcyMsgSelect.layoutManager = LinearLayoutManager(activity)
                 rcyMsgSelect.adapter = adapter
                 rcyMsgAdapter = adapter
@@ -53,7 +54,7 @@ class MessageSelectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMessageSelectionBinding.inflate(layoutInflater,container,false)
+        binding = FragmentSelectFragmentBinding.inflate(layoutInflater,container,false)
         return binding.root
     }
 
@@ -61,16 +62,18 @@ class MessageSelectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initializing lateinit variables
-        messagesVM = (context as MainActivity).messagesVM
+        mainActivity = context as MainActivity
+        messagesVM = mainActivity.getMessagesVM()
+
         rcyMsgSelect = binding.rcyMsgSelect
 
         // Button to clear and hide this Fragment's container
         binding.btnCancelMsgSelect.setOnClickListener {
-            (context as MainActivity).hideMessageSelection()
+            mainActivity.hideSubFragment()
         }
 
         // Initializing Fragment UI
-        when (messagesVM.currentlySelecting.value) {
+        when (messagesVM.currentlySelecting.value!!) {
             "Template1" -> {
                 binding.tvHeaderMsgSelect.text = "Choose a template"
             }
